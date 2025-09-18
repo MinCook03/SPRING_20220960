@@ -124,3 +124,29 @@
     
 })(jQuery);
 
+
+// app.js
+
+// 1. HTML에서 버튼 요소를 ID로 가져옵니다.
+const button = document.getElementById('closeOrBackButton');
+
+if (button) {
+    // 2. 버튼에 클릭 이벤트 리스너를 추가합니다.
+    button.addEventListener('click', confirmClose);
+}
+
+/**
+ * 3. 창 닫기/뒤로 가기를 확인하는 로직
+ */
+function confirmClose() {
+    // 사용자에게 확인 메시지를 띄웁니다.
+    const userConfirmed = confirm("현재 창을 닫으시겠습니까?");
+
+    if (userConfirmed) {
+        // '확인' 시: 창 닫기 시도 (새 창에서만 작동할 가능성이 높음)
+        window.close(); 
+    } else {
+        // '취소' 시: 이전 방문 페이지로 이동 (진정한 '뒤로 가기')
+        history.back(); 
+    }
+}
