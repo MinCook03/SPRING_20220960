@@ -18,11 +18,11 @@ public class DemoController {
         return "hello"; // hello.html 연결
     }
 
-    @GetMapping("/hello2") // 전송 방식 GET
-    public String hello2(Model model) {
-        model.addAttribute("data", " 강민국님."); // model 설정
-        return "hello2"; // hello2.html 연결
-    }
+    // @GetMapping("/hello2") // 전송 방식 GET
+    // public String hello2(Model model) {
+    // model.addAttribute("data", " 강민국님."); // model 설정
+    // return "hello2"; // hello2.html 연결
+    // }
 
     @GetMapping("/about_detailed") // 전송 방식 GET
     public String about() {
