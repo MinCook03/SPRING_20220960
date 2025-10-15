@@ -31,7 +31,7 @@ public class BlogController {
     // 이전에 요청하신 게시글 저장 및 리다이렉트 기능 추가
     /**
      * 새 게시글을 저장하고 게시글 목록 페이지로 리다이렉트합니다.
-     * 
+     *
      * @param request 폼 데이터를 바인딩할 요청 객체
      * @return 리다이렉트할 경로 문자열
      */
@@ -86,7 +86,7 @@ public class BlogController {
             model.addAttribute("errorMessage", "요청하신 페이지의 ID 형식이 올바르지 않습니다. 숫자만 입력해주세요.");
             
             // 보여줄 에러 페이지의 HTML 파일 이름을 반환합니다.
-            return "/error_page/article_error"; 
+            return "/error_page/article_error";
         }
     }
 
