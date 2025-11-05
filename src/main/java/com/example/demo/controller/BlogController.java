@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.example.demo.model.domain.Article;
+import com.example.demo.model.domain.Board;
 import com.example.demo.model.service.BlogService; // 기존 코드 유지
 import com.example.demo.model.service.AddArticleRequest; // 새로운 기능 추가를 위해 import
 import lombok.RequiredArgsConstructor; // @Autowired 대신 생성자 주입을 위해 추가
@@ -53,6 +54,14 @@ public class BlogController {
         return "article_list"; // .HTML 연결
     }
 
+    @GetMapping("/board_list") // 새로운 게시판 링크 지정
+    public String board_list(Model model) {
+        List<Board> list = blogService.findAllbBoards(); // 게시판 전체 리스트, 기존 Article에서 Board로 변경됨
+        model.addAttribute("boards", list); // 모델에 추가
+        return "board_list"; // .HTML 연결
+    }
+
+
     // favicon.ico 처리 메서드 추가 (필수적인 최적화)
     @GetMapping("/favicon.ico")
     @ResponseBody
@@ -60,7 +69,7 @@ public class BlogController {
         // 브라우저의 파비콘 요청에 대해 불필요한 뷰 리졸버 검색을 방지
     }
 
-    @GetMapping("/article_edit/{id}") // 게시판 링크 지정
+    @GetMapping("/board_edit/{id}") // 게시판 링크 지정
     public String article_edit(Model model, @PathVariable Long id) {
         Optional<Article> list = blogService.findById(id); // 선택한 게시판 글
         if (list.isPresent()) {
@@ -90,15 +99,29 @@ public class BlogController {
         }
     }
 
-    @PutMapping("/api/article_edit/{id}")
+    @PutMapping("/api/board_edit/{id}")
     public String updateArticle(@PathVariable Long id, @ModelAttribute AddArticleRequest request) {
         blogService.update(id, request);
         return "redirect:/article_list"; // 글 수정 이후 .html 연결
     }
 
-    @DeleteMapping("/api/article_delete/{id}")
+    @DeleteMapping("/api/board_delete/{id}")
     public String deleteArticle(@PathVariable Long id) {
         blogService.delete(id);
         return "redirect:/article_list";
     }
+
+
+    @GetMapping("/board_view/{id}") // 게시판 링크 지정
+    public String board_view(Model model, @PathVariable Long id) {
+        Optional<Board> list = blogService.findByIdboards(id); // 선택한 게시판 글
+        
+        if (list.isPresent()) {
+            model.addAttribute("boards", list.get()); // 존재할 경우 실제 Board 객체를 모델에 추가
+        } else {
+            // 처리할 로직 추가 (예: 오류 페이지로 리다이렉트, 예외 처리 등)
+            return "/error_page/article_error"; // 오류 처리 페이지로 연결
+    }
+    return "board_view"; // .HTML 연결
+}
 }
