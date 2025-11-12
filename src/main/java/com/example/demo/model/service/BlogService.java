@@ -3,12 +3,17 @@ package com.example.demo.model.service;
 import java.util.List;
 import java.util.Optional;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.example.demo.model.domain.Article;
 import com.example.demo.model.domain.Board;
 import com.example.demo.model.repository.BlogRepository;
 import com.example.demo.model.repository.BoardRepository;
+
+
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,15 +34,20 @@ public class BlogService {
 
 
 
-    public Article save(AddArticleRequest request) {
-        // DTO가 없는 경우 이곳에 직접 구현 가능
-        // public ResponseEntity<Article> addArticle(@RequestParam String title,
-        // @RequestParam String content) {
-        // Article article = Article.builder()
-        // .title(title)
-        // .content(content)
-        // .build();
-        return blogRepository.save(request.toEntity());
+    // public Article save(AddArticleRequest request) {
+    //     // DTO가 없는 경우 이곳에 직접 구현 가능
+    //     // public ResponseEntity<Article> addArticle(@RequestParam String title,
+    //     // @RequestParam String content) {
+    //     // Article article = Article.builder()
+    //     // .title(title)
+    //     // .content(content)
+    //     // .build();
+    //     return blogRepository.save(request.toEntity());
+    // }
+
+    public Board save(AddArticleRequest request){
+    // DTO가 없는 경우 이곳에 직접 구현 가능
+        return blogRepository2.save(request.toEntity());
     }
 
 
@@ -62,6 +72,13 @@ public class BlogService {
     blogRepository.deleteById(id);
     }
 
+    public Page<Board> findAll(Pageable pageable) {
+    return blogRepository2.findAll(pageable);
+    }
+    
+    public Page<Board> searchByKeyword(String keyword, Pageable pageable) {
+    return blogRepository2.findByTitleContainingIgnoreCase(keyword, pageable);
+    } // LIKE 검색 제공(대소문자 무시)
 
 
 
