@@ -2,79 +2,87 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <title>블로그 게시판(new)</title>
+    <title>게시글 상세</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     />
+    <style>
+      .board-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        padding: 15px;
+      }
+      .board-info {
+        font-size: 0.9rem;
+        color: #6c757d;
+        border-bottom: 1px solid #dee2e6;
+        padding: 10px 15px;
+      }
+      .board-content {
+        min-height: 300px;
+        padding: 20px 15px;
+      }
+    </style>
   </head>
   <body>
-    <div class="container">
-      <h1 class="mt-5">블로그 게시판(new)</h1>
+    <div class="container mt-5">
+      <div class="card">
+        <div class="board-header">
+          <h2 th:text="${board.title}">게시글 제목</h2>
+        </div>
 
-      <!-- 게시글 리스트 -->
-      <div class="mt-5">
-        <h2>게시글 목록</h2>
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>제목</th>
-              <th>작성자</th>
-              <th>작성일</th>
-              <th>조회수</th>
-              <th>좋아요</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr th:each="board : ${boards}">
-              <td th:text="${board.id}"></td>
-              <td>
-                <a th:href="@{/board_view/{id}(id=${board.id})}">
-                  <span th:text="${board.title}"></span>
-                </a>
-              </td>
+        <div class="board-info d-flex justify-content-between">
+          <div>
+            <span class="mr-3"
+              ><strong>작성자:</strong>
+              <span th:text="${board.user}">홍길동</span></span
+            >
+            <span
+              ><strong>작성일:</strong>
+              <span th:text="${board.newdate}">2023-01-01</span></span
+            >
+          </div>
+          <div>
+            <span class="mr-3"
+              >조회수: <span th:text="${board.count}">0</span></span
+            >
+            <span>좋아요: <span th:text="${board.likec}">0</span></span>
+          </div>
+        </div>
 
-              <td th:text="${board.user}"></td>
-              <td th:text="${board.newdate}"></td>
-              <td th:text="${board.count}"></td>
-              <td th:text="${board.likec}"></td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="board-content">
+          <div th:text="${board.content}">게시글 내용이 들어갑니다.</div>
+        </div>
       </div>
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>글내용</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr th:each="board : ${boards}">
-            <td th:text="${board.content}"></td>
-          </tr>
-        </tbody>
-      </table>
-      <tr th:each="board : ${boards}">
-        <td>
-          <!-- 수정 버튼 -->
+
+      <div class="mt-3 d-flex justify-content-between">
+        <a href="/board_list" class="btn btn-secondary">목록</a>
+
+        <div>
           <a
-            class="btn btn-warning"
             th:href="@{/board_edit/{id}(id=${board.id})}"
+            class="btn btn-warning"
             >수정</a
           >
-          <!-- 삭제 버튼 -->
+
           <form
             th:action="@{/api/board_delete/{id}(id=${board.id})}"
             method="post"
             style="display: inline"
           >
             <input type="hidden" name="_method" value="delete" />
-            <button type="submit" class="btn btn-danger">삭제</button>
+            <button
+              type="submit"
+              class="btn btn-danger"
+              onclick="return confirm('정말 삭제하시겠습니까?');"
+            >
+              삭제
+            </button>
           </form>
-        </td>
-      </tr>
+        </div>
+      </div>
     </div>
   </body>
 </html>
