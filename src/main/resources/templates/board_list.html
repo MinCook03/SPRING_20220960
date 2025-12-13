@@ -2,72 +2,127 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <title>블로그 게시판(new)</title>
+    <title>블로그 게시판</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     />
+    <style>
+      .table-hover tbody tr:hover {
+        background-color: #f1f1f1;
+        cursor: pointer;
+      }
+    </style>
   </head>
   <body>
     <div class="container">
-      <h1 class="mt-5">블로그 게시판(new)</h1>
+      <h1 class="mt-5 mb-4 text-center">블로그 게시판</h1>
 
-      <!-- 게시글 리스트 -->
-      <div class="mt-5">
-        <!-- 게시글 검색창 -->
-        <form th:action="@{/board_list}" method="get" class="mt-4">
-          <div class="input-group">
-            <input
-              type="text"
-              name="keyword"
-              th:value="${keyword}"
-              class="form-control"
-              placeholder="검색어 입력..."
-            />
-            <button type="submit" class="btn btn-primary">검색</button>
-          </div>
-        </form>
-        <hr />
-        <h2>게시글 목록</h2>
-        <table class="table table-bordered">
-          <thead>
+      <div class="row mb-3 d-flex justify-content-between align-items-center">
+        <div class="col-md-8">
+          <form th:action="@{/board_list}" method="get" class="form-inline">
+            <div class="input-group w-100">
+              <input
+                type="text"
+                name="keyword"
+                th:value="${keyword}"
+                class="form-control"
+                placeholder="제목을 검색하세요..."
+              />
+              <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">검색</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-4 text-right">
+          <a class="btn btn-warning" th:href="@{/board_write}">✏️ 글쓰기</a>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table
+          class="table table-bordered table-hover table-striped text-center"
+        >
+          <thead class="thead-dark">
             <tr>
-              <th>ID</th>
-              <th>제목</th>
-              <th>작성자</th>
-              <th>작성일</th>
-              <th>조회수</th>
-              <th>좋아요</th>
+              <th style="width: 10%">번호</th>
+              <th style="width: 40%">제목</th>
+              <th style="width: 15%">작성자</th>
+              <th style="width: 20%">작성일</th>
+              <th style="width: 10%">조회</th>
+              <th style="width: 5%">추천</th>
             </tr>
           </thead>
           <tbody>
-            <tr th:each="board : ${boards}">
-              <td th:text="${board.id}"></td>
-              <td>
-                <a th:href="@{/board_view/{id}(id=${board.id})}">
+            <tr th:each="board, i : ${boards}" th:unless="${boards.isEmpty()}">
+              <td th:text="${startNum + i.index}"></td>
+
+              <td class="text-left">
+                <a
+                  th:href="@{/board_view/{id}(id=${board.id})}"
+                  class="text-dark font-weight-bold"
+                  style="text-decoration: none"
+                >
                   <span th:text="${board.title}"></span>
                 </a>
               </td>
-
               <td th:text="${board.user}"></td>
               <td th:text="${board.newdate}"></td>
               <td th:text="${board.count}"></td>
               <td th:text="${board.likec}"></td>
             </tr>
-          </tbody>
-        </table>
-        <table class="table table-bordered">
-          <tbody>
-            <tr>
-              <td>
-                <!-- 글쓰기 버튼 -->
-                <a class="btn btn-warning" th:href="@{/board_write}">글쓰기</a>
+
+            <tr th:if="${boards.isEmpty()}">
+              <td colspan="6" class="text-center py-5">
+                <span class="text-muted">등록된 게시글이 없습니다.</span>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
+
+      <nav aria-label="Page navigation" th:if="${totalPages > 0}" class="mt-4">
+        <ul class="pagination justify-content-center">
+          <li
+            class="page-item"
+            th:classappend="${currentPage == 0} ? 'disabled'"
+          >
+            <a
+              class="page-link"
+              th:href="@{/board_list(page=${currentPage - 1}, keyword=${keyword})}"
+              aria-label="Previous"
+            >
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li
+            class="page-item"
+            th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+            th:classappend="${i == currentPage} ? 'active'"
+          >
+            <a
+              class="page-link"
+              th:href="@{/board_list(page=${i}, keyword=${keyword})}"
+              th:text="${i + 1}"
+              >1</a
+            >
+          </li>
+          <li
+            class="page-item"
+            th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'"
+          >
+            <a
+              class="page-link"
+              th:href="@{/board_list(page=${currentPage + 1}, keyword=${keyword})}"
+              aria-label="Next"
+            >
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </div>
   </body>
 </html>

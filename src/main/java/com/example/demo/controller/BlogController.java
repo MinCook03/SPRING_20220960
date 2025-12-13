@@ -20,15 +20,16 @@ public class BlogController {
 
     private final BlogService blogService;
 
-    // ==========================================
-    // 1. 게시글 목록 조회 (페이징 + 검색)
+   // ==========================================
+    // 1. 게시글 목록 조회 (수정됨: 글 번호 계산 로직 추가)
     // ==========================================
     @GetMapping("/board_list")
     public String boardList(Model model, 
                             @RequestParam(defaultValue = "0") int page, 
                             @RequestParam(defaultValue = "") String keyword) {
         
-        PageRequest pageable = PageRequest.of(page, 10); 
+        int pageSize = 5; // 페이지당 게시글 수 (변수로 관리)
+        PageRequest pageable = PageRequest.of(page, pageSize); 
         Page<Board> list; 
 
         if (keyword.isBlank()) {
@@ -37,10 +38,17 @@ public class BlogController {
             list = blogService.searchByKeyword(keyword, pageable);
         }
 
+        // [추가 기능] 시작 번호 계산: (현재페이지 * 페이지사이즈) + 1
+        // 예: 0페이지 -> 1, 1페이지 -> 6, 2페이지 -> 11 ...
+        int startNum = (page * pageSize) + 1;
+
         model.addAttribute("boards", list);
         model.addAttribute("totalPages", list.getTotalPages());
         model.addAttribute("currentPage", page);
         model.addAttribute("keyword", keyword);
+        
+        // [추가] 뷰로 시작 번호 전달
+        model.addAttribute("startNum", startNum);
 
         return "board_list";
     }
