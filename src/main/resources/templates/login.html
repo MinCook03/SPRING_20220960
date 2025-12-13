@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>로그인</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+
+    <style>
+      body {
+        background-color: #f8f9fa; /* 배경 연한 회색 */
+      }
+      .login-container {
+        min-height: 100vh; /* 화면 전체 높이 사용 */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .card {
+        border: none;
+        border-radius: 15px;
+        width: 100%;
+        max-width: 400px; /* 로그인 카드의 최대 너비 제한 */
+      }
+      .form-control {
+        border-radius: 10px;
+        height: 50px; /* 입력창 높이 키움 */
+      }
+      .btn {
+        border-radius: 10px;
+        padding: 10px;
+        font-size: 1.1rem;
+        font-weight: bold;
+      }
+      .login-title {
+        font-weight: bold;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <div class="card shadow-lg">
+        <div class="card-body p-5">
+          <div class="text-center mb-4">
+            <h2 class="login-title">로그인</h2>
+            <p class="text-muted">서비스 이용을 위해 로그인해주세요.</p>
+          </div>
+
+          <div class="alert alert-danger" th:if="${error}">
+            <span th:text="${error}">로그인 실패 메시지</span>
+          </div>
+
+          <form th:action="@{/api/login_check}" method="post">
+            <div class="form-group">
+              <label for="email" class="font-weight-bold"
+                >아이디 (이메일)</label
+              >
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-control"
+                placeholder="example@email.com"
+                required
+                autofocus
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="password" class="font-weight-bold">비밀번호</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                class="form-control"
+                placeholder="비밀번호 입력"
+                required
+              />
+            </div>
+
+            <div class="form-group form-check mb-4">
+              <input
+                type="checkbox"
+                id="remember-me"
+                name="remember-me"
+                class="form-check-input"
+              />
+              <label for="remember-me" class="form-check-label"
+                >로그인 상태 유지</label
+              >
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block mb-3">
+              로그인
+            </button>
+
+            <hr />
+
+            <div class="text-center mt-3">
+              <span class="text-muted">계정이 없으신가요?</span>
+              <a
+                class="btn btn-outline-secondary btn-sm ml-2"
+                th:href="@{/join_new}"
+                >회원가입</a
+              >
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

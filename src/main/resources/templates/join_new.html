@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>회원 가입</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+
+    <style>
+      body {
+        background-color: #f8f9fa; /* 배경을 연한 회색으로 설정 */
+      }
+      .card {
+        border: none;
+        border-radius: 15px; /* 카드 모서리를 둥글게 */
+      }
+      .form-control {
+        border-radius: 10px; /* 입력창 모서리 둥글게 */
+        padding: 10px 15px;
+      }
+      .btn-primary {
+        border-radius: 10px;
+        padding: 10px;
+        font-size: 1.1rem;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+          <div class="mt-5 mb-3 text-center">
+            <h1 class="font-weight-bold">회원가입</h1>
+            <p class="text-muted">새로운 계정을 생성하세요.</p>
+          </div>
+
+          <div class="card shadow-lg mb-5">
+            <div class="card-body p-5">
+              <h3 class="card-title text-center mb-4">회원정보 입력</h3>
+
+              <form th:action="@{/api/members}" method="post">
+                <div class="form-group">
+                  <label for="name" class="font-weight-bold">이름</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    name="name"
+                    placeholder="이름을 입력하세요"
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="email" class="font-weight-bold">이메일</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    name="email"
+                    placeholder="example@email.com"
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="password" class="font-weight-bold"
+                    >비밀번호</label
+                  >
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    name="password"
+                    placeholder="비밀번호를 입력하세요"
+                    required
+                  />
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label for="age" class="font-weight-bold">나이</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="age"
+                      name="age"
+                      placeholder="나이"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group col-md-8">
+                    <label for="mobile" class="font-weight-bold"
+                      >전화번호</label
+                    >
+                    <input
+                      type="tel"
+                      class="form-control"
+                      id="mobile"
+                      name="mobile"
+                      placeholder="010-1234-5678"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="address" class="font-weight-bold">주소</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="address"
+                    name="address"
+                    placeholder="주소를 입력하세요"
+                    required
+                  />
+                </div>
+
+                <div class="mt-5">
+                  <button type="submit" class="btn btn-primary btn-block">
+                    회원가입하기
+                  </button>
+                </div>
+
+                <div class="text-center mt-3">
+                  <a href="/board_list" class="text-secondary"
+                    >메인으로 돌아가기</a
+                  >
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
