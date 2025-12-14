@@ -4,20 +4,49 @@
     <meta charset="UTF-8" />
     <title>블로그 게시판</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     />
+
     <style>
       .table-hover tbody tr:hover {
         background-color: #f1f1f1;
         cursor: pointer;
       }
+      .page-item.active .page-link {
+        background-color: #007bff;
+        border-color: #007bff;
+      }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1 class="mt-5 mb-4 text-center">블로그 게시판</h1>
+      <div class="row align-items-center mt-5 mb-4 border-bottom pb-2">
+        <div class="col-md-3 d-none d-md-block"></div>
+
+        <div class="col-md-6 text-center">
+          <h1 class="m-0 font-weight-bold">블로그 게시판</h1>
+        </div>
+
+        <div class="col-md-3 text-right" th:if="${email != null}">
+          <div
+            class="d-flex flex-column justify-content-center align-items-end"
+          >
+            <span class="small text-muted mb-1">
+              👋 <b><span th:text="${email}"></span></b>님
+            </span>
+            <a
+              href="/api/logout"
+              class="btn btn-sm btn-outline-secondary py-0"
+              style="font-size: 0.8rem"
+            >
+              로그아웃
+            </a>
+          </div>
+        </div>
+      </div>
 
       <div class="row mb-3 d-flex justify-content-between align-items-center">
         <div class="col-md-8">
@@ -36,8 +65,11 @@
             </div>
           </form>
         </div>
+
         <div class="col-md-4 text-right">
-          <a class="btn btn-warning" th:href="@{/board_write}">✏️ 글쓰기</a>
+          <a class="btn btn-warning shadow-sm" th:href="@{/board_write}"
+            >✏️ 글쓰기</a
+          >
         </div>
       </div>
 
@@ -58,7 +90,6 @@
           <tbody>
             <tr th:each="board, i : ${boards}" th:unless="${boards.isEmpty()}">
               <td th:text="${startNum + i.index}"></td>
-
               <td class="text-left">
                 <a
                   th:href="@{/board_view/{id}(id=${board.id})}"
@@ -83,7 +114,11 @@
         </table>
       </div>
 
-      <nav aria-label="Page navigation" th:if="${totalPages > 0}" class="mt-4">
+      <nav
+        aria-label="Page navigation"
+        th:if="${totalPages > 0}"
+        class="mt-4 mb-5"
+      >
         <ul class="pagination justify-content-center">
           <li
             class="page-item"

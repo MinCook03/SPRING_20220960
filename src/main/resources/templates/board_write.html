@@ -2,40 +2,75 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <title>블로그 게시판(new)</title>
+    <title>블로그 글쓰기</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     />
+    <style>
+      .container {
+        max-width: 800px;
+      }
+    </style>
   </head>
   <body>
-    <div class="container">
-      <h1 class="mt-5">블로그 게시판(new)</h1>
-            <!-- 게시글 추가 폼 -->
-        <div class="mt-4">
-            <h2>게시글 추가(제목과 내용 입력)</h2>
-            <form th:action="@{/api/boards}" method="post" name="content">
-                <div class="form-group">
-                    <label for="title">제목:</label>
-                    <input type="text" class="form-control" id="title" name="title" required>
-                </div>
-            <div class="form-group">
-                <label for="content">내용:</label>
-                <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">글 저장하기</button>
-            <input type="hidden" id="user" name="user" value="GUEST">
-            <input type="hidden" id="newdate" name="newdate" value="오늘날짜">
-            <input type="hidden" id="count" name="count" value="0">
-            <input type="hidden" id="likec" name="likec" value="0">
-            </form>
-        </div>
-          </tbody>
+    <div class="container mt-5">
+      <h2 class="mb-4 text-center font-weight-bold">게시글 작성</h2>
 
-       
-        </table>
-      </div>
+      <form th:action="@{/api/boards}" method="post" name="content">
+        <div class="form-group">
+          <label for="user" class="font-weight-bold">작성자</label>
+          <input
+            type="text"
+            class="form-control"
+            id="user"
+            name="user"
+            th:value="${email}"
+            readonly
+            style="background-color: #e9ecef"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="title" class="font-weight-bold">제목</label>
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            name="title"
+            placeholder="제목을 입력하세요"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="content" class="font-weight-bold">내용</label>
+          <textarea
+            class="form-control"
+            id="content"
+            name="content"
+            rows="10"
+            placeholder="내용을 자유롭게 작성하세요"
+            required
+          ></textarea>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4 mb-5">
+          <a href="/board_list" class="btn btn-secondary px-4"
+            >취소 / 목록으로</a
+          >
+          <button type="submit" class="btn btn-primary px-4">
+            글 저장하기
+          </button>
+        </div>
+
+        <input type="hidden" id="count" name="count" value="0" />
+        <input type="hidden" id="likec" name="likec" value="0" />
+      </form>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

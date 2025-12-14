@@ -35,37 +35,40 @@
 
         <div class="board-info d-flex justify-content-between">
           <div>
-            <span class="mr-3"
-              ><strong>작성자:</strong>
-              <span th:text="${board.user}">홍길동</span></span
-            >
-            <span
-              ><strong>작성일:</strong>
-              <span th:text="${board.newdate}">2023-01-01</span></span
-            >
+            <span class="mr-3">
+              <strong>작성자:</strong>
+              <span th:text="${board.user}">홍길동</span>
+            </span>
+            <span>
+              <strong>작성일:</strong>
+              <span th:text="${board.newdate}">2023-01-01</span>
+            </span>
           </div>
           <div>
-            <span class="mr-3"
-              >조회수: <span th:text="${board.count}">0</span></span
-            >
-            <span>좋아요: <span th:text="${board.likec}">0</span></span>
+            <span class="mr-3">
+              조회수: <span th:text="${board.count}">0</span>
+            </span>
+            <span> 좋아요: <span th:text="${board.likec}">0</span> </span>
           </div>
         </div>
 
         <div class="board-content">
-          <div th:text="${board.content}">게시글 내용이 들어갑니다.</div>
+          <div th:text="${board.content}" style="white-space: pre-wrap">
+            게시글 내용이 들어갑니다.
+          </div>
         </div>
       </div>
 
       <div class="mt-3 d-flex justify-content-between">
         <a href="/board_list" class="btn btn-secondary">목록</a>
 
-        <div>
+        <div th:if="${loginUser != null and loginUser == board.user}">
           <a
             th:href="@{/board_edit/{id}(id=${board.id})}"
             class="btn btn-warning"
-            >수정</a
           >
+            수정
+          </a>
 
           <form
             th:action="@{/api/board_delete/{id}(id=${board.id})}"
